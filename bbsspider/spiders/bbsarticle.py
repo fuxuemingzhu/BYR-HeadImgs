@@ -18,7 +18,6 @@ class Article(scrapy.Spider):
     article_urls = ['https://bbs.byr.cn/#!article/Picture/3208312']
     headers = const.HEADERS
     all_articles = defaultdict(list)
-    removeDuplicate = False  # 是否去掉重复的头像，默认为False
 
     def __init__(self):
         dispatcher.connect(self.spider_closed, signals.spider_closed)
@@ -50,7 +49,7 @@ class Article(scrapy.Spider):
         cur_page_url = response._get_url()
         avatarUrls = response.css('div.b-content table.article div.a-u-img ::attr(src)').extract()
         motherurl = cur_page_url.split('?')[0]
-        if self.removeDuplicate:
+        if const.removeDuplicate:
             for avatarUrl in avatarUrls:
                 if avatarUrl not in self.all_articles[motherurl]:
                     self.all_articles[motherurl].append(avatarUrl)

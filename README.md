@@ -1,10 +1,14 @@
 # 北邮人论坛用户合影
 
-一键合成北邮人论坛十大&主题帖所有回复头像合影
+一键合成北邮人论坛十大&主题帖所有回复头像合影～～
 
+现已支持生成合影时的用户头像去重功能。
+
+未对用户去重的合影如下，每行头像代表了帖子的一页：
 ![此处输入图片的描述][1]
 上图源自该贴的所有用户头像：你有一个研一小哥哥，请查收~ https://bbs.byr.cn/#!article/Friends/1858656
 
+对用户去重的合影如下，顺序依然是按照回复帖子的顺序：
 ![此处输入图片的描述][2]
 上图来自：十大合影～ https://bbs.byr.cn/#!article/Picture/3208312
 
@@ -41,7 +45,9 @@ scrapy crawl article
 
 生成指定帖子的用户合影。
 
-程序运行后，在headImages目录下生成了合影，命名方式为帖子地址结尾的数字。
+3. 程序运行后，在headImages目录下生成了合影，命名方式为帖子地址结尾的数字。
+
+注：bbsspider/spiders/const.py中removeDuplicate变量控制是否对用户头像去重，当其为True时去重，为False时不去重。默认不去重。
 
 # 版权声明
 
@@ -53,4 +59,4 @@ scrapy crawl article
 
 
   [1]: https://raw.githubusercontent.com/fuxuemingzhu/BYR-HeadImgs/master/examples/1858656.png
-  [2]: https://github.com/fuxuemingzhu/BYR-HeadImgs/blob/9455cd3e5981e38a35a312e2a804992594d4a15b/examples/3208312.png
+  [2]: https://github.com/fuxuemingzhu/BYR-HeadImgs/blob/592ae4a7683bbfcc200d5e03410d07c207624795/examples/3208312.png?raw=true
