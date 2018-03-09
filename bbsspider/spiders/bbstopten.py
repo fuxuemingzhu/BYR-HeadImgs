@@ -19,6 +19,7 @@ class TopTen(scrapy.Spider):
     start_urls = const.ALLOW_DOMAINS
     headers = const.HEADERS
     all_articles = defaultdict(list)
+    removeDuplicate = False  # 是否去掉重复的头像，默认为False
 
     def __init__(self):
         dispatcher.connect(self.spider_closed, signals.spider_closed)
@@ -40,20 +41,28 @@ class TopTen(scrapy.Spider):
                     if 10 * y + x >= users_len:
                         break
                     fname = "images/%s" % users[10 * y + x].split('/')[-1]
-                    img = Image.open(fname)
-                    img.thumbnail((125, 125))
-                    toImage.paste(img, (x * rows, y * rows))
+                    try:
+                        img = Image.open(fname)
+                        img.thumbnail((125, 125))
+                        toImage.paste(img, (x * rows, y * rows))
+                    except:
+                        print("don't has the image %s" % fname)
             toImage.save('./headImages/%s.png' % art.split('/')[-1])
             print(art + '\tsave image success!')
 
     def parse(self, response):
         cur_page_url = response._get_url()
-        users = response.css('div.b-content table.article div.a-u-img ::attr(src)').extract()
+        avatarUrls = response.css('div.b-content table.article div.a-u-img ::attr(src)').extract()
         motherurl = cur_page_url.split('?')[0]
-        self.all_articles[motherurl].extend(users)
+        if self.removeDuplicate:
+            for avatarUrl in avatarUrls:
+                if avatarUrl not in self.all_articles[motherurl]:
+                    self.all_articles[motherurl].append(avatarUrl)
+        else:
+            self.all_articles[motherurl].extend(avatarUrls)
         item = ArtItem()
         item['url'] = motherurl
-        item['users'] = users
+        item['avatarUrls'] = avatarUrls
         print(item)
         yield item
         sel_page = response.css('div.t-pre ul.pagination li ol')

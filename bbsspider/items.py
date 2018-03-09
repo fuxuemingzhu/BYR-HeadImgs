@@ -10,4 +10,4 @@ import scrapy
 
 class ArtItem(scrapy.Item):
     url = scrapy.Field()
-    users = scrapy.Field()
+    avatarUrls = scrapy.Field()

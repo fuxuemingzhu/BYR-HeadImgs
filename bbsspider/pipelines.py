@@ -14,7 +14,7 @@ class ImagePipeline(ImagesPipeline):  # 继承ImagesPipeline这个类，实现�
         为了这么做，你需要重写 get_media_requests() 方法，
         并对各个图片URL返回一个Request:
         '''
-        for i, image_url in enumerate(item['users']):
+        for i, image_url in enumerate(item['avatarUrls']):
             yield scrapy.Request(image_url)
 
     def file_path(self, request, response=None, info=None):
