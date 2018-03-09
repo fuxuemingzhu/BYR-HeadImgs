@@ -52,5 +52,5 @@ scrapy crawl article
 3. 感谢前辈写的论坛爬虫：https://github.com/buptbill220/bbsspider
 
 
-  [1]: https://raw.githubusercontent.com/fuxuemingzhu/BYR-HeadImgs/master/headImages/1858656.png
-  [2]: https://raw.githubusercontent.com/fuxuemingzhu/BYR-HeadImgs/master/headImages/3208312.png
+  [1]: https://raw.githubusercontent.com/fuxuemingzhu/BYR-HeadImgs/master/examples/1858656.png
+  [2]: https://raw.githubusercontent.com/fuxuemingzhu/BYR-HeadImgs/master/examples/3208312.png
