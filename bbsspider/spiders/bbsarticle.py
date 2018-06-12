@@ -15,7 +15,7 @@ import os
 class Article(scrapy.Spider):
     name = 'article'
     start_urls = const.ALLOW_DOMAINS
-    article_urls = ['https://bbs.byr.cn/#!article/Picture/3208312']
+    article_urls = ['https://bbs.byr.cn/#!article/Constellations/462125']
     headers = const.HEADERS
     all_articles = defaultdict(list)
 
@@ -39,9 +39,12 @@ class Article(scrapy.Spider):
                     if 10 * y + x >= users_len:
                         break
                     fname = "images/%s" % users[10 * y + x].split('/')[-1]
-                    img = Image.open(fname)
-                    img.thumbnail((125, 125))
-                    toImage.paste(img, (x * rows, y * rows))
+                    try:
+                        img = Image.open(fname)
+                        img.thumbnail((125, 125))
+                        toImage.paste(img, (x * rows, y * rows))
+                    except:
+                        print("don't has the image %s" % fname)
             toImage.save('./headImages/%s.png' % art.split('/')[-1])
             print(art + '\tsave image success!')
 
