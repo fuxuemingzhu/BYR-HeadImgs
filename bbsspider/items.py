@@ -11,3 +11,4 @@ import scrapy
 class ArtItem(scrapy.Item):
     url = scrapy.Field()
     avatarUrls = scrapy.Field()
+    userName = scrapy.Field()

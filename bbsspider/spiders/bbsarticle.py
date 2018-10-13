@@ -10,14 +10,16 @@ import scrapy
 import PIL.Image as Image
 import math
 import os
+import time  # 引入time模块
 
 
 class Article(scrapy.Spider):
     name = 'article'
     start_urls = const.ALLOW_DOMAINS
-    article_urls = ['https://bbs.byr.cn/#!article/Constellations/462125']
+    article_urls = ['https://bbs.byr.cn/#!article/Talking/6053294']
     headers = const.HEADERS
     all_articles = defaultdict(list)
+    all_users = list()
 
     def __init__(self):
         dispatcher.connect(self.spider_closed, signals.spider_closed)
@@ -47,10 +49,19 @@ class Article(scrapy.Spider):
                         print("don't has the image %s" % fname)
             toImage.save('./headImages/%s.png' % art.split('/')[-1])
             print(art + '\tsave image success!')
+        print(self.all_users)
+        scrawl_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        filename = 'all_users_ids_time=' + scrawl_time + '.txt'
+        with open(filename, 'w') as f:
+            f.write("本爬虫的爬取时间是：" + scrawl_time + '\n')
+            for i, user in enumerate(self.all_users):
+                f.write(str(i + 1) + ',' + user + '\n')
+        print(filename + '\tsave user ids success!')
 
     def parse(self, response):
         cur_page_url = response._get_url()
         avatarUrls = response.css('div.b-content table.article div.a-u-img ::attr(src)').extract()
+        userName = response.css('div.b-content table.article span.a-u-name a::text').extract()
         motherurl = cur_page_url.split('?')[0]
         if const.removeDuplicate:
             for avatarUrl in avatarUrls:
@@ -58,9 +69,11 @@ class Article(scrapy.Spider):
                     self.all_articles[motherurl].append(avatarUrl)
         else:
             self.all_articles[motherurl].extend(avatarUrls)
+        self.all_users.extend(userName)
         item = ArtItem()
         item['url'] = motherurl
         item['avatarUrls'] = avatarUrls
+        item['userName'] = userName
         print(item)
         yield item
         sel_page = response.css('div.t-pre ul.pagination li ol')
