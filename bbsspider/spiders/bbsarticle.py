@@ -55,7 +55,7 @@ class Article(scrapy.Spider):
         with open(filename, 'w') as f:
             f.write("本爬虫的爬取时间是：" + scrawl_time + '\n')
             for i, user in enumerate(self.all_users):
-                f.write(str(i + 1) + ',' + user + '\n')
+                f.write(str(i) + ',' + user + '\n')
         print(filename + '\tsave user ids success!')
 
     def parse(self, response):
